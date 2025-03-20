@@ -1,6 +1,9 @@
 import logo from "./logo.svg";
 import "./App.css";
 import StudentRow from "./components/StudentRow";
+import {Button as ButtonBootstrap} from "react-bootstrap";
+import Button from "./components/Button";
+import Status from "./components/Status";
 
 function App() {
   // Tạo ra 1 danh sách SV (MSSV, Họ và tên, Điểm)
@@ -51,6 +54,17 @@ function App() {
           </tbody>
         </table>
       </div>
+      <Button title={"Test"}/>
+
+      <br/>
+      <br/>
+      <Status/>
+      <br/>
+      <br/>
+      <Status type={1}/>
+      <br/>
+      <br/>
+      <Status type={2}/>
     </section>
   );
 }

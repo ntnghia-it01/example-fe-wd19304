@@ -1,0 +1,23 @@
+.status-container {
+  display: flex;
+  padding: 10px;
+  border-color: green;
+  border-width: 1px;
+  border-radius: 10px;
+  border-style: solid;
+  align-items: center;
+  width: fit-content;
+}
+
+.status-container .dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 2.5px;
+  background-color: green;
+  margin-right: 10px;
+}
+.status-container .title {
+  font-size: 15px;
+  color: green;
+  margin-bottom: 0;
+}
