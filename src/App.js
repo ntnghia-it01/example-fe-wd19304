@@ -1,72 +1,40 @@
 import logo from "./logo.svg";
 import "./App.css";
-import StudentRow from "./components/StudentRow";
-import {Button as ButtonBootstrap} from "react-bootstrap";
-import Button from "./components/Button";
-import Status from "./components/Status";
+import {
+  Routes,
+  Route
+} from 'react-router'
+import Home from './pages/Home';
+import Dashboard from './pages/Dashboard';
+import Login from './pages/Login';
+import Products from './pages/Products';
+import MainUser from "./pages/MainUser";
 
-function App() {
-  // Tạo ra 1 danh sách SV (MSSV, Họ và tên, Điểm)
-  // Hiển thị danh sách SV ra 1 bảng
-  // Xây dựng components TableRow chứa thông tin của SV
-  // 3 cột
-  // - MSSV
-  // - Họ và tên
-  // - Trạng thái (Nếu điểm >= 5 ? "Pass" : "Fail")
+const App = () => {
 
-  const students = [
-    {
-      code: "PC12345",
-      name: "Nguyen Van A",
-      point: 8,
-    },
-    {
-      code: "PC12346",
-      name: "Nguyen Van B",
-      point: 3,
-    },
-    {
-      code: "PC12347",
-      name: "Nguyen Van C",
-      point: 9.25,
-    },
-  ];
-
-  const renderStudent = (value, index)=>{
-    return <StudentRow code={value.code}
-      name={value.name}
-      isPass={value.point >= 5}/>
-  }
+  // localhost:3000 => Home
+  // localhost:3000/login => Login
 
   return (
-    <section className="container p-5">
-      <div className="table-responsive">
-        <table className="table table-primary">
-          <thead>
-            <tr>
-              <th scope="col">Code</th>
-              <th scope="col">Name</th>
-              <th scope="col">Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            {students.map(renderStudent)}        
-          </tbody>
-        </table>
-      </div>
-      <Button title={"Test"}/>
+    <Routes>
+      <Route path="/" element={<MainUser/>}>
+        {/* Khi người dùng mở vào url: localhost:3000/** */}
+        {/* => MainUser */}
+        <Route index element={<Home/>}/>
+        {/* Route con không có dấu / phía trước */}
+        <Route path="login"  element={<Login/>}/>
+      </Route>
 
-      <br/>
-      <br/>
-      <Status/>
-      <br/>
-      <br/>
-      <Status type={1}/>
-      <br/>
-      <br/>
-      <Status type={2}/>
-    </section>
+      {/* <Route path="/admin" element={<MainAdmin/>}> */}
+        {/* <Route index element={<Dashboard/>}/> */}
+        {/* Route con không có dấu / phía trước */}
+        {/* <Route path="products"  element={<Products/>}/> */}
+      {/* </Route> */}
+
+      {/* <Route path="/" element={<Home/>}/>
+      <Route path="/login" element={<Login/>}/> */}
+    </Routes>
   );
-}
+};
 
 export default App;
