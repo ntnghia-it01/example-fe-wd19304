@@ -9,6 +9,8 @@ import Dashboard from './pages/Dashboard';
 import Login from './pages/Login';
 import Products from './pages/Products';
 import MainUser from "./pages/MainUser";
+import Register from "./pages/Register";
+import RegsiterHookForm from "./pages/RegsiterHookForm";
 
 const App = () => {
 
@@ -23,6 +25,8 @@ const App = () => {
         <Route index element={<Home/>}/>
         {/* Route con không có dấu / phía trước */}
         <Route path="login"  element={<Login/>}/>
+        <Route path="register"  element={<Register/>}/>
+        <Route path="register-hook-form"  element={<RegsiterHookForm/>}/>
       </Route>
 
       {/* <Route path="/admin" element={<MainAdmin/>}> */}
@@ -36,5 +40,8 @@ const App = () => {
     </Routes>
   );
 };
+
+// Tạo 1 trang Đăng ký với url /register
+// username, password, name, class (dropdown: WD19301 -> WD19304)
 
 export default App;
