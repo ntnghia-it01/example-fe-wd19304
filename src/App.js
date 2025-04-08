@@ -11,6 +11,7 @@ import Products from './pages/Products';
 import MainUser from "./pages/MainUser";
 import Register from "./pages/Register";
 import RegsiterHookForm from "./pages/RegsiterHookForm";
+import Users from "./pages/Users";
 
 const App = () => {
 
@@ -27,7 +28,18 @@ const App = () => {
         <Route path="login"  element={<Login/>}/>
         <Route path="register"  element={<Register/>}/>
         <Route path="register-hook-form"  element={<RegsiterHookForm/>}/>
+        <Route path="users"  element={<Users/>}/>
       </Route>
+
+      {/* Tạo 1 trang danh sách users */}
+      {/* Dùng axios gọi api users */}
+      {/* Hiển thị thông tin user ra 1 bảng */}
+      {/* Dùng 1 biến state lưu mảng rỗng */}
+      {/* Gọi api bên trong useEffect */}
+      {/* Lấy giá trị response từ api set vào biến state */}
+      {/* Dùng map với state để render ra giao diện */}
+      {/* Gender == 0 => Male, gender == 1 => Female */}
+      {/* Role == 0 => Admin, role == 1 => User */}
 
       {/* <Route path="/admin" element={<MainAdmin/>}> */}
         {/* <Route index element={<Dashboard/>}/> */}

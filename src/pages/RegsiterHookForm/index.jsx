@@ -1,6 +1,21 @@
 import {useForm} from 'react-hook-form';
+import {
+  useNavigate,
+  // /register-hook-form?id=123 => Query params
+  useSearchParams,
+  // /register-hook-form/123 => Path params
+  useParams
+} from 'react-router'
+import axios from 'axios';
+import { useEffect } from 'react';
+
+// Sử dụng thư viện react-router
+// Lấy giá trị của id trên url
+// log ra
 
 const RegsiterHookForm = () => {
+  const navigate = useNavigate();
+  const [queryParams, setQueryParams] = useSearchParams()
   const {
     register,
     formState: {errors}, // Dùng errors là biến để hiện thị lên giao diện
@@ -21,6 +36,10 @@ const RegsiterHookForm = () => {
     }
   });
 
+  useEffect(()=>{
+    console.log("value id === ", queryParams.get("id"))
+  }, [])
+
   // Thêm 2 trường dữ liệu
   // Radio button giới tính
   // Input file hình ảnh
@@ -32,8 +51,33 @@ const RegsiterHookForm = () => {
   // + Định dạng ảnh phải là jpg || jpge || png || webp
   // + Kích thước tối đa của ảnh là 10MB
 
-  const handleRegister = (props)=>{
-    console.log("Register props === ", props)
+  const handleRegister = async (props)=>{
+    try{
+      console.log("Register props === ", props)
+      // props.username => input username
+  
+      let formData = new FormData();
+      // formdData.append("key", "value")
+      formData.append("username", props.username)
+      formData.append("password", props.password)
+      formData.append("name", props.name)
+      formData.append("gender", props.gender)
+      formData.append("avatar", props.avatar[0])
+  
+      const res = await axios.post("http://172.16.26.135:8080/auth/add-user", formData)
+      console.log("success == ", res)
+
+      // Sau khi thêm thành công
+      // Chuyển về trang danh sách users
+      // Và phải có thông tin user vừa được thêm
+      // react-router
+
+      // window.location.href = "/users"
+
+      navigate("/users");
+    }catch(e){
+      console.log("error === ", e);
+    }
   }
 
   // Số lượng ảnh tối thiểu là 3
@@ -46,81 +90,81 @@ const RegsiterHookForm = () => {
   //  ];
   // Kích thước của mỗi ảnh không được lớn hơn 15MB
 
-  const validateAvatar = (props)=>{
-    console.log("Avatar props === ", props)
-
-    if(props.length < 3){
-      return "Số lượng tối thiểu 3 ảnh";
-    }
-
-    const types = [
-      "image/jpg",
-      "image/jpeg",
-      "image/png",
-      "image/webp"
-    ];
-    const maxSize = 1024 * 1024 * 15;
-
-    for(let index = 0; index < props.length; index++){
-      if(!types.includes(props[index].type)){
-        return "Ảnh không đúng định dạng";
-      }
-
-      if(props[index].size > maxSize){
-        return "Kích thước ảnh quá lớn";
-      }
-    }
-
-    return true;
-  }
-
   // const validateAvatar = (props)=>{
   //   console.log("Avatar props === ", props)
 
-  //   // Chưa chọn ảnh
-  //   if(props.length == 0){
-  //     return "Ảnh bắt buộc chọn";
+  //   if(props.length < 3){
+  //     return "Số lượng tối thiểu 3 ảnh";
   //   }
 
-  //   // props[0].type => image/png || image/jpg Giá trị của type
-  //   // jpg || jpge || png || webp || gif danh mục bắt buộc
-  //   // kiểm tra nếu type không nằm trong ds danh mục thì báo lỗi
-  //   // Tạo ra 1 mảng types
   //   const types = [
   //     "image/jpg",
   //     "image/jpeg",
   //     "image/png",
   //     "image/webp"
   //   ];
+  //   const maxSize = 1024 * 1024 * 15;
 
-  //   if(!types.includes(props[0].type)){
-  //     return "Ảnh sai định dạng";
+  //   for(let index = 0; index < props.length; index++){
+  //     if(!types.includes(props[index].type)){
+  //       return "Ảnh không đúng định dạng";
+  //     }
+
+  //     if(props[index].size > maxSize){
+  //       return "Kích thước ảnh quá lớn";
+  //     }
   //   }
 
-  //   // Kích thước tối đa của ảnh là 10MB
-  //   // props[0].size => Kích thước của ảnh (byte)
-  //   // Đổi 10MB => ? byte
-  //   const maxSize = 1024 * 1024 * 10;
-
-  //   if(props[0].size > maxSize){
-  //     return "Kích thước không hợp lệ"
-  //   }
-
-  //   // 4 ngày => milisecond
-  //   // 1000 * 60 * 60 * 24 * 4
-    
-  //   // Nếu định dạng ảnh không phải các loại trên
-  //   // return "Sai định dạng ảnh"; <=> message: "Sai định dạng ảnh"
-
-  //   // Lấy thông tin của file => props[0]
-
-  //   // props[0].type so sánh với danh sách định dạng trên
-  //   // nếu lỗi return "Sai định dạng";
-
-  //   return true; // Không xảy ra lỗi ở file avatar
-  //   // return "abc"; Xảy ra lỗi và lỗi sẽ được hiển nội dung
-  //   // của return
+  //   return true;
   // }
+
+  const validateAvatar = (props)=>{
+    console.log("Avatar props === ", props)
+
+    // Chưa chọn ảnh
+    if(props.length == 0){
+      return "Ảnh bắt buộc chọn";
+    }
+
+    // props[0].type => image/png || image/jpg Giá trị của type
+    // jpg || jpge || png || webp || gif danh mục bắt buộc
+    // kiểm tra nếu type không nằm trong ds danh mục thì báo lỗi
+    // Tạo ra 1 mảng types
+    const types = [
+      "image/jpg",
+      "image/jpeg",
+      "image/png",
+      "image/webp"
+    ];
+
+    if(!types.includes(props[0].type)){
+      return "Ảnh sai định dạng";
+    }
+
+    // Kích thước tối đa của ảnh là 10MB
+    // props[0].size => Kích thước của ảnh (byte)
+    // Đổi 10MB => ? byte
+    const maxSize = 1024 * 1024 * 10;
+
+    if(props[0].size > maxSize){
+      return "Kích thước không hợp lệ"
+    }
+
+    // 4 ngày => milisecond
+    // 1000 * 60 * 60 * 24 * 4
+    
+    // Nếu định dạng ảnh không phải các loại trên
+    // return "Sai định dạng ảnh"; <=> message: "Sai định dạng ảnh"
+
+    // Lấy thông tin của file => props[0]
+
+    // props[0].type so sánh với danh sách định dạng trên
+    // nếu lỗi return "Sai định dạng";
+
+    return true; // Không xảy ra lỗi ở file avatar
+    // return "abc"; Xảy ra lỗi và lỗi sẽ được hiển nội dung
+    // của return
+  }
 
   return (
     <div className="col-6 offset-3">
@@ -238,8 +282,9 @@ const RegsiterHookForm = () => {
       
 
       <button onClick={handleSubmit(handleRegister)} type="button" class="btn btn-primary">
-        Add
+        {queryParams.get("id") ? "Update" : "Add"}
       </button>
+      {/* có id là "Update" <> "Add" */}
     </div>
   );
 };

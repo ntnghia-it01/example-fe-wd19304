@@ -31,6 +31,10 @@ const Home = ()=>{
   // Call API, set default value
   useEffect(()=>{
     console.log("use effect 2");
+
+    return ()=>{
+      // Sự kiện khi components được gỡ bỏ
+    }
   }, []);
 
 
