@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router";
+import Constanst from "../../Constanst";
 
 const Users = () => {
   const [data, setData] = useState([]);
@@ -32,7 +33,7 @@ const Users = () => {
 
   const getData = async () => {
     try {
-      const res = await axios.get("http://172.16.26.135:8080/auth/users");
+      const res = await axios.get(`${Constanst.DOMAIN_API}/auth/users`);
       console.log("Response === ", res.data.data);
       console.log("abc");
 
@@ -53,7 +54,7 @@ const Users = () => {
         <td>{value.gender == 0 ? "Male" : "Female"}</td>
         <td>
           <img
-            src={`http://172.16.26.135:8080/${value.avatar}`}
+            src={`${Constanst.DOMAIN_API}/${value.avatar}`}
             style={imageStyle}
           />
         </td>
@@ -85,7 +86,7 @@ const Users = () => {
       let formData = new FormData();
       formData.append("id", id);
 
-      await axios.delete("http://172.16.26.135:8080/auth/delete-user", {data: formData});
+      await axios.delete(`${Constanst.DOMAIN_API}/auth/delete-user`, {data: formData});
 
       getData();
     }catch(e){

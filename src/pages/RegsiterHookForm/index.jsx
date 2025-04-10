@@ -8,6 +8,7 @@ import {
 } from 'react-router'
 import axios from 'axios';
 import { useEffect } from 'react';
+import Constanst from '../../Constanst';
 
 // Sử dụng thư viện react-router
 // Lấy giá trị của id trên url
@@ -29,16 +30,39 @@ const RegsiterHookForm = () => {
     getValues, // getValues() => trả về 1 Object là giá trị của 
     // tất cả các ô input mà đã đăng ký 
     setValue, // setValue("username", "abc")
-  } = useForm({
-    defaultValues: {
-      username: "abc",
-      password: "123455"
-    }
-  });
+  } = useForm();
 
   useEffect(()=>{
     console.log("value id === ", queryParams.get("id"))
+
+    // Nếu có id tồn lại => Sửa
+    // Gọi api get user info theo id
+    // Sau khi gọi xong có response
+    // Lấy giá trị của response gán vào những ô input tương ứng (setValue)
+    if(queryParams.get("id")){
+      getUserInfo();
+    }
   }, [])
+
+  const getUserInfo = async () =>{
+    try{
+      const res = await axios.get(`${Constanst.DOMAIN_API}/auth/user?id=${queryParams.get("id")}`)
+      // Dùng setValue để gán giá trị
+      // username, name, gender
+
+      // setValue("username", "abc")
+      // username => key đăng ký trong ô input
+      // abc => giá trị tương ứng từ res trả về
+
+      setValue("username", res.data.data.username)
+      setValue("name", res.data.data.name)
+      // setValue("gender", String(res.data.data.gender))
+      // setValue("gender", res.data.data.gender + "")
+      setValue("gender", `${res.data.data.gender}`)
+    }catch(e){
+      console.log(e)
+    }
+  }
 
   // Thêm 2 trường dữ liệu
   // Radio button giới tính
@@ -53,6 +77,35 @@ const RegsiterHookForm = () => {
 
   const handleRegister = async (props)=>{
     try{
+      // Kiểm tra nếu có tồn tại id ở url
+      // => Chức năng sửa
+      // Thực hiện gọi API sửa
+      // Sau khi sửa xong chuyển về danh sách users
+      // Dừng thực thi hàm handleRegister
+      if(queryParams.get("id")){
+        let formData = new FormData();
+        formData.append("username", props.username)
+        formData.append("password", props.password)
+        formData.append("name", props.name)
+        formData.append("gender", props.gender)
+        // post 1 file
+        formData.append("avatar", props.avatar[0])
+        formData.append("id", queryParams.get("id"))
+
+        // Post nhiều
+        // props.avatar.length => Số lượng file
+        // for(let index = 0; index < props.avatar.length; index++){
+        //   formData.append(`avatar[${index}]`, props.avatar[index])
+        // }
+
+        await axios.put(`${Constanst.DOMAIN_API}/auth/update-user`, formData)
+
+        navigate("/users")
+
+        return;
+      }
+
+      // Thêm
       console.log("Register props === ", props)
       // props.username => input username
   
@@ -64,7 +117,7 @@ const RegsiterHookForm = () => {
       formData.append("gender", props.gender)
       formData.append("avatar", props.avatar[0])
   
-      const res = await axios.post("http://172.16.26.135:8080/auth/add-user", formData)
+      const res = await axios.post(`${Constanst.DOMAIN_API}/auth/add-user`, formData)
       console.log("success == ", res)
 
       // Sau khi thêm thành công
@@ -245,8 +298,6 @@ const RegsiterHookForm = () => {
             class="form-check-input"
             type="radio"
             value="0"
-            // Giá trị của value phải khác nhau
-            // register của useForm phải giống nhau hoàn toàn
             {...register("gender", {
               required: {value: true, message: "Gender required"}
             })}
