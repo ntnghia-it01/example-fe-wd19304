@@ -1,8 +1,19 @@
 import axios from 'axios';
 import {useForm} from 'react-hook-form'
 import Constants from '../../Constanst'
+import {useCookies} from 'react-cookie'
+import {useNavigate} from 'react-router'
 
 const Login = () => {
+  // Biến chứa giá trị, hàm setter, hàm remove
+  const [
+    cookies,
+    setCookie,
+    removeCookie
+  ] = useCookies(["token", "role"]);
+
+  const navigate = useNavigate();
+
   const {
     register,
     // Đăng ký tên của từng ô input
@@ -30,6 +41,30 @@ const Login = () => {
       // const res = await axios.delete(`${Constants.DOMAIN_API}/auth/login`, {data: formData})
 
       console.log(res.data);
+
+      let expiresDate = new Date(); // Thời gian hiện tại
+      expiresDate.setHours(expiresDate.getHours() + 10);
+
+      // Key, value, config
+      setCookie("token", res.data.data.token, {
+        expires: expiresDate, // Thời gian hiện tại
+        // Truyền vào thời gian sau 10h nữa
+      })
+
+      setCookie("role", res.data.data.role, {
+        expires: expiresDate, // Thời gian hiện tại
+        // Truyền vào thời gian sau 10h nữa
+      })
+
+      // Kiểm tra role
+      // nếu role == 0 (Admin) => chuyển trang /admin/users
+      // nếu role == 1 (User) => chuyển trang /user/info
+
+      if(res.data.data.role == 0){
+        navigate("/admin/users")
+      }else{
+        navigate("/user/info")
+      }
 
     }catch(e){
 

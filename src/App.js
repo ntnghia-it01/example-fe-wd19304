@@ -20,46 +20,26 @@ const App = () => {
 
   return (
     <Routes>
-      <Route path="/" element={<MainUser/>}>
-        {/* Khi người dùng mở vào url: localhost:3000/** */}
-        {/* => MainUser */}
-        {/* <Route index element={<Home/>}/> */}
-        {/* Route con không có dấu / phía trước */}
-        {/* <Route path="login"  element={<Login/>}/>
-        <Route path="register"  element={<Register/>}/>
-        <Route path="register-hook-form"  element={<RegsiterHookForm/>}/>
-        <Route path="users"  element={<Users/>}/> */}
+
+      {/* Chứa những trang không cần đăng nhập có thể truy cập */}
+      <Route path="/">
+        <Route path="login"  element={<Login/>}/>
+        <Route path="register"  element={<Login/>}/>
       </Route>
 
-      <Route path="/login"  element={<Login/>}/>
+      {/* Chứa những trang cần đăng nhập với vai trò là user */}
+      <Route path="/user" element={<MainUser/>}>
+        <Route path="info"  element={<h1>User info</h1>}/>
+        <Route path="cart"  element={<h1>User info</h1>}/>
+        <Route path="order"  element={<h1>User info</h1>}/>
+      </Route>
 
-      {/* Tạo 1 trang login. với url /login */}
-      {/* Sử dụng react-hook-form bắt validate */}
-      {/* Và lấy thông tin được nhập từ input */}
-      {/* Thực hiện kiểm tra lỗi qua react-hook-form */}
-      {/* Nếu có lỗi hiển thị lỗi */}
-      {/* Nếu không lỗi hiển gọi api login */}
-      {/* Sau khi gọi api login thành công */}
-      {/* Log ra response từ api */}
-
-      {/* Tạo 1 trang danh sách users */}
-      {/* Dùng axios gọi api users */}
-      {/* Hiển thị thông tin user ra 1 bảng */}
-      {/* Dùng 1 biến state lưu mảng rỗng */}
-      {/* Gọi api bên trong useEffect */}
-      {/* Lấy giá trị response từ api set vào biến state */}
-      {/* Dùng map với state để render ra giao diện */}
-      {/* Gender == 0 => Male, gender == 1 => Female */}
-      {/* Role == 0 => Admin, role == 1 => User */}
-
-      {/* <Route path="/admin" element={<MainAdmin/>}> */}
-        {/* <Route index element={<Dashboard/>}/> */}
-        {/* Route con không có dấu / phía trước */}
-        {/* <Route path="products"  element={<Products/>}/> */}
-      {/* </Route> */}
-
-      {/* <Route path="/" element={<Home/>}/>
-      <Route path="/login" element={<Login/>}/> */}
+      {/* Chứa những trang cần đăng nhập với vai trò là admin */}
+      <Route path="/admin">
+        <Route path="dashboard"  element={<Users/>}/>
+        <Route path="users"  element={<Users/>}/>
+        <Route path="products"  element={<Users/>}/>
+      </Route>
     </Routes>
   );
 };

@@ -2,8 +2,14 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router";
 import Constanst from "../../Constanst";
+import {useCookies} from 'react-cookie'
 
 const Users = () => {
+  const [
+    cookies,
+    setCookie,
+    removeCookie
+  ] = useCookies(["token", "role"]);
   const [data, setData] = useState([]);
 
   // http://172.16.18.45:8080/auth/users
@@ -33,7 +39,16 @@ const Users = () => {
 
   const getData = async () => {
     try {
-      const res = await axios.get(`${Constanst.DOMAIN_API}/auth/users`);
+      // Lấy giá trị token từ cookie
+      // Truyền token vào header của api
+
+      const token = cookies.token
+
+      const res = await axios.get(`${Constanst.DOMAIN_API}/auth/users`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
       console.log("Response === ", res.data.data);
       console.log("abc");
 
