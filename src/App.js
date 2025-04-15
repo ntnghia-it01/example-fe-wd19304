@@ -23,13 +23,24 @@ const App = () => {
       <Route path="/" element={<MainUser/>}>
         {/* Khi người dùng mở vào url: localhost:3000/** */}
         {/* => MainUser */}
-        <Route index element={<Home/>}/>
+        {/* <Route index element={<Home/>}/> */}
         {/* Route con không có dấu / phía trước */}
-        <Route path="login"  element={<Login/>}/>
+        {/* <Route path="login"  element={<Login/>}/>
         <Route path="register"  element={<Register/>}/>
         <Route path="register-hook-form"  element={<RegsiterHookForm/>}/>
-        <Route path="users"  element={<Users/>}/>
+        <Route path="users"  element={<Users/>}/> */}
       </Route>
+
+      <Route path="/login"  element={<Login/>}/>
+
+      {/* Tạo 1 trang login. với url /login */}
+      {/* Sử dụng react-hook-form bắt validate */}
+      {/* Và lấy thông tin được nhập từ input */}
+      {/* Thực hiện kiểm tra lỗi qua react-hook-form */}
+      {/* Nếu có lỗi hiển thị lỗi */}
+      {/* Nếu không lỗi hiển gọi api login */}
+      {/* Sau khi gọi api login thành công */}
+      {/* Log ra response từ api */}
 
       {/* Tạo 1 trang danh sách users */}
       {/* Dùng axios gọi api users */}
