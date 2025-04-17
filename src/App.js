@@ -23,6 +23,7 @@ const App = () => {
 
       {/* Chứa những trang không cần đăng nhập có thể truy cập */}
       <Route path="/">
+        <Route index element={<Home/>}/>
         <Route path="login"  element={<Login/>}/>
         <Route path="register"  element={<Login/>}/>
       </Route>
